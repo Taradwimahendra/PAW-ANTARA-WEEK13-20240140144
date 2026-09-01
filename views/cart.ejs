@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keranjang Belanja</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('partials/nav', { storeName: process.env.STORE_NAME || 'Toko Kita', active: 'cart' }) %>
+
+  <main class="container animate-fade-in" style="margin-top: 2rem;">
+    <div class="card animate-fade-in delay-1" style="max-width: 800px; margin: 0 auto;">
+      <div class="card-header" style="background: rgba(255,255,255,0.4);">
+        <h2 style="font-size: 1.5rem;">🛒 Keranjang Belanja</h2>
+      </div>
+      
+      <div class="card-body">
+        <% if (cartItems.length === 0) { %>
+          <div class="text-center" style="padding: 3rem 0;">
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Keranjang Anda masih kosong.</p>
+            <a href="/" class="btn btn-primary">Kembali Belanja</a>
+          </div>
+        <% } else { %>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Produk</th>
+                  <th>Harga</th>
+                  <th style="width: 150px; text-align: center;">Jumlah</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% cartItems.forEach(item => { %>
+                  <tr>
+                    <td style="font-weight: 500;"><%= item.product.name %></td>
+                    <td>Rp <%= new Intl.NumberFormat('id-ID').format(item.product.price) %></td>
+                    <td>
+                      <form action="/cart/update" method="POST" style="display:flex; justify-content:center; gap: 0.5rem;">
+                        <input type="hidden" name="productId" value="<%= item.product.id %>">
+                        <button type="submit" name="action" value="decrease" class="btn" style="background:#e2e8f0; padding: 0.2rem 0.6rem;">-</button>
+                        <span style="padding: 0.2rem 0.5rem; font-weight:600;"><%= item.quantity %></span>
+                        <button type="submit" name="action" value="increase" class="btn" style="background:#e2e8f0; padding: 0.2rem 0.6rem;">+</button>
+                      </form>
+                    </td>
+                    <td style="font-weight: 600;">Rp <%= new Intl.NumberFormat('id-ID').format(item.subtotal) %></td>
+                    <td>
+                      <form action="/cart/update" method="POST">
+                        <input type="hidden" name="productId" value="<%= item.product.id %>">
+                        <button type="submit" name="action" value="remove" class="btn btn-danger" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Hapus</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3" style="text-align: right; font-weight: 700; font-size: 1.25rem;">Total:</td>
+                  <td colspan="2" style="font-weight: 700; font-size: 1.25rem; color: var(--primary-color);">Rp <%= new Intl.NumberFormat('id-ID').format(total) %></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <h3 style="margin-bottom: 1rem;">Checkout</h3>
+            <form action="/cart/checkout" method="POST" style="display: flex; gap: 1rem; align-items: flex-end;">
+              <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label class="form-label">Nama Pembeli</label>
+                <input type="text" name="buyerName" class="form-control" required placeholder="Masukkan nama Anda" value="<%= user && user.username ? user.username : '' %>">
+              </div>
+              <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem;">Checkout Sekarang</button>
+            </form>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,18 +1,18 @@
-<header class="bg-white border-b border-gray-200 py-4 px-6 mb-6">
-  <div class="max-w-5xl mx-auto flex items-center justify-between">
-    <div>
-      <h1 class="text-xl font-bold text-gray-800"><%= storeName %></h1>
-      <p class="text-sm text-gray-500">Belanja & tanya-tanya lewat chat AI</p>
-    </div>
-    <nav class="flex gap-2">
-      <a
-        href="/"
-        class="px-3 py-1.5 text-sm rounded-lg font-medium <%= active === 'katalog' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600' %>"
-      >Katalog & Chat</a>
-      <a
-        href="/invoices"
-        class="px-3 py-1.5 text-sm rounded-lg font-medium <%= active === 'invoice' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600' %>"
-      >Invoice</a>
-    </nav>
+<nav class="navbar">
+  <a href="/" class="navbar-brand"><%= storeName %></a>
+  <div class="navbar-nav">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/cart" class="nav-link">Cart <% if(typeof cartCount !== 'undefined' && cartCount > 0) { %><span class="badge badge-admin"><%= cartCount %></span><% } %></a>
+    
+    <% if (typeof user !== 'undefined' && user && user.userId) { %>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin/products" class="nav-link">Manage Products</a>
+        <a href="/admin/invoices" class="nav-link">Invoices</a>
+      <% } %>
+      <span style="margin-left:1rem; color:var(--text-muted); font-weight:500;">Hi, <%= user.username %></span>
+      <a href="/auth/logout" class="btn btn-danger" style="margin-left: 0.5rem; padding: 0.4rem 1rem;">Logout</a>
+    <% } else { %>
+      <a href="/auth/login" class="btn btn-primary" style="margin-left: 1rem;">Login</a>
+    <% } %>
   </div>
-</header>
+</nav>

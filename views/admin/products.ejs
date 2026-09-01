@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Kelola Produk</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/nav', { storeName: 'Admin Panel', active: 'admin-products', user: user }) %>
+
+  <main class="container">
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header flex justify-between align-center">
+        <h2>📦 Kelola Produk</h2>
+      </div>
+      
+      <div class="card-body">
+        <!-- Form Tambah Produk -->
+        <h3 style="margin-bottom: 1rem;">Tambah Produk Baru</h3>
+        <form action="/admin/products" method="POST" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: var(--bg-color); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+          <div class="form-group">
+            <label class="form-label">Nama Produk</label>
+            <input type="text" name="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Harga (Rp)</label>
+            <input type="number" name="price" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stok</label>
+            <input type="number" name="stock" class="form-control" required>
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="form-label">Deskripsi</label>
+            <textarea name="description" class="form-control" rows="3" required></textarea>
+          </div>
+          <div style="grid-column: span 2; text-align: right;">
+            <button type="submit" class="btn btn-primary">Simpan Produk</button>
+          </div>
+        </form>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama Produk</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach(product => { %>
+                <tr>
+                  <td>#<%= product.id %></td>
+                  <td><%= product.name %></td>
+                  <td>Rp <%= new Intl.NumberFormat('id-ID').format(product.price) %></td>
+                  <td><%= product.stock %></td>
+                  <td>
+                    <!-- Edit form modal-like using details/summary -->
+                    <details style="position: relative; display: inline-block;">
+                      <summary class="btn" style="background:#e2e8f0; font-size:0.8rem; padding: 0.3rem 0.6rem; margin-right: 0.5rem; cursor:pointer;">Edit</summary>
+                      <div style="position: absolute; right: 0; top: 100%; width: 300px; background: white; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg); padding: 1rem; border-radius: 8px; z-index: 10;">
+                        <form action="/admin/products/<%= product.id %>/update" method="POST" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                          <input type="text" name="name" value="<%= product.name %>" class="form-control text-sm" required>
+                          <input type="number" name="price" value="<%= product.price %>" class="form-control text-sm" required>
+                          <input type="number" name="stock" value="<%= product.stock %>" class="form-control text-sm" required>
+                          <textarea name="description" class="form-control text-sm" rows="2" required><%= product.description %></textarea>
+                          <button type="submit" class="btn btn-primary" style="font-size:0.8rem; padding: 0.3rem;">Update</button>
+                        </form>
+                      </div>
+                    </details>
+
+                    <form action="/admin/products/<%= product.id %>/delete" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin hapus produk ini?');">
+                      <button type="submit" class="btn btn-danger" style="font-size:0.8rem; padding: 0.3rem 0.6rem;">Hapus</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

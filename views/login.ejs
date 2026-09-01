@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - <%= process.env.STORE_NAME || 'Toko Kita' %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="flex align-center justify-center" style="min-height: 100vh;">
+  
+  <div class="card animate-fade-in" style="width: 100%; max-width: 400px; margin: 1rem;">
+    <div class="card-body">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 1.75rem; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Login to System</h2>
+      <p style="color: var(--text-muted); font-size: 0.875rem;">Masuk menggunakan akun Customer atau Admin</p>
+    </div>
+
+    <% if (error) { %>
+      <div style="background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.875rem; text-align: center;">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <form action="/auth/login" method="POST">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="Masukkan username" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">Login</button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a href="/" style="font-size: 0.875rem; color: var(--text-muted); text-decoration: none;">&larr; Kembali ke Home</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

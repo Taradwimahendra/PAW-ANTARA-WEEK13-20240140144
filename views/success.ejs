@@ -4,27 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Order Berhasil</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center px-4">
-  <div class="bg-white border border-gray-200 rounded-xl p-6 w-full max-w-sm text-center shadow-sm">
-    <div class="text-4xl mb-3">✅</div>
-    <h1 class="text-lg font-bold text-gray-800 mb-1">Order Berhasil!</h1>
-    <p class="text-sm text-gray-500 mb-4">Admin <%= storeName %> udah dapet notifikasi order kamu</p>
+<body class="flex align-center justify-center animate-fade-in" style="min-height: 100vh; background: var(--bg-gradient); padding: 1rem;">
+  
+  <div class="card animate-fade-in delay-1" style="width: 100%; max-width: 500px; padding: 2rem; text-align: center;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+    <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Order Berhasil!</h1>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Admin <%= storeName %> udah dapet notifikasi order kamu</p>
 
-    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-left text-sm text-gray-600 mb-4">
-      <p><strong>Order ID:</strong> #<%= order.id %></p>
-      <p><strong>Produk:</strong> <%= product.name %></p>
-      <p><strong>Jumlah:</strong> <%= order.quantity %></p>
-      <p><strong>Total:</strong> Rp<%= (product.price * order.quantity).toLocaleString('id-ID') %></p>
-      <p><strong>Atas nama:</strong> <%= order.buyerName %></p>
+    <div style="background: rgba(255,255,255,0.4); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; text-align: left; font-size: 0.9rem; margin-bottom: 1.5rem;">
+      <p style="margin-bottom: 0.5rem;"><strong>Order ID:</strong> #<%= order.id %></p>
+      <p style="margin-bottom: 0.5rem;"><strong>Atas nama:</strong> <%= order.buyerName %></p>
+      <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-color);">
+        <p style="font-weight: 600; margin-bottom: 0.5rem;">Barang yang dipesan:</p>
+        <ul style="list-style: none; padding: 0;">
+          <% items.forEach(item => { %>
+            <li style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+              <span><%= item.product.name %> (x<%= item.quantity %>)</span>
+              <span>Rp <%= new Intl.NumberFormat('id-ID').format(item.price * item.quantity) %></span>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); font-weight: 700; font-size: 1.1rem;">
+        <span>Total:</span>
+        <span style="color: var(--primary-color);">Rp <%= new Intl.NumberFormat('id-ID').format(order.totalAmount) %></span>
+      </div>
     </div>
 
-    <p class="text-xs text-gray-400 mb-4">Admin bakal segera menghubungi kamu buat konfirmasi pembayaran & pengiriman.</p>
+    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">Admin bakal segera menghubungi kamu buat konfirmasi pembayaran & pengiriman.</p>
 
-    <a href="/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 rounded-lg">
+    <a href="/" class="btn btn-primary" style="display: block; width: 100%;">
       Balik ke Katalog
     </a>
   </div>
+
 </body>
 </html>
